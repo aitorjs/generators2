@@ -1,0 +1,24 @@
+@extends('layouts.scaffold')
+
+@section('main')
+
+<h3 class="thin underline">Crear {{nameFirst}} nuevo</h3>
+<div class="columns">
+<div class="six-columns">
+{{ Form::open(array('url' => '{{name}}')) }}
+{{ Form::token(); }}
+
+{{formElements}}
+  <p class="button-height">
+    {{ Form::submit('Create', array('class' => 'btn')) }}
+  </p>
+{{ Form::close() }}
+
+@if ($errors->any())
+<ul>
+  {{ implode('', $errors->all('<li class="error">:message</li>')) }}
+</ul>
+@endif
+</div>
+</div>
+@stop

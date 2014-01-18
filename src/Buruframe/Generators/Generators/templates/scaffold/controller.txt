@@ -1,0 +1,127 @@
+<?php
+use aitiba\{{nameFirst}}\{{nameFirst}}Repository as {{nameFirst}};
+class {{nameController}} extends BaseController {
+	/**
+     * The {{name}} instance.
+     *
+     * @var ${{name}} string
+     */
+    private ${{name}};
+
+    /**
+     * Create a new {{nameFirst}}.
+     *
+     * @param  ${{name}} ${{name}}
+     * @return void
+     */
+    public function __construct({{nameFirst}} ${{name}})
+    {
+      $this->{{name}} = ${{name}};
+    }
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
+	{
+		${{namePlural}} = $this->{{name}}->findAll();
+        return View::make('{{namePlural}}.index')->with('{{namePlural}}', ${{namePlural}});
+	}
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create()
+	{
+		return View::make('{{namePlural}}.create');
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function store()
+	{
+		$data = Input::all();
+        
+        $v = $this->{{name}}->validation($data);
+        if ( is_object($v) ) {
+            return Redirect::route('{{name}}.create')->withErrors($v)->withInput();
+        }
+        
+        if ( $this->{{name}}->store($data) )
+        {
+            return Redirect::route('{{name}}.index')->with("flash_message", Lang::get('{{nameUpperAll}} succesfully created!'));
+        }
+	}
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		${{name}} = $this->{{name}}->findOrFail($id);
+        return View::make('{{namePlural}}.show')->with('{{name}}', ${{name}});
+	}
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		${{name}} = $this->{{name}}->find($id);
+        if (!${{name}}) {
+            return Redirect::route('{{name}}.index');
+        }
+        return View::make('{{namePlural}}.edit')->with('{{name}}', ${{name}});
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update($id)
+	{
+		$data = Input::all();
+        $data['id'] = $id;
+        unset($data['actionType']);
+        $v = $this->{{name}}->validation($data);
+        if ( is_object($v) ) {
+            return Redirect::route('{{name}}.edit', $id)->withErrors($v)->withInput();
+        }
+        if ( $this->{{name}}->update($data) )
+        {
+            return Redirect::route('{{name}}.index')->with("flash_message", Lang::get('{{nameUpperAll}} succesfully edited!'));
+        }
+        return false;
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+		if($this->{{name}}->destroy($id))
+        {
+            return Redirect::route('{{name}}.index')->with("flash_message", Lang::get('{{nameUpperAll}} succesfully deleted!'));
+        } else {
+            return Redirect::route('{{name}}.index')->with("flash_message", Lang::get('{{nameUpperAll}} problems to delete!'));
+        }
+	}
+}
